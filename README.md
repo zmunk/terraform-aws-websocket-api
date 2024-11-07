@@ -3,6 +3,8 @@
 Terraform module to deploy Websocket API using AWS API Gateway and Python Lambda functions
 on websocket connect, disconnect, and send-message events.
 
+[See terraform registry page](https://registry.terraform.io/modules/zmunk/websocket-api/aws/latest)
+
 ## Usage
 Create three python scripts, one for "connect", one for "disconnect", and one for "sendmessage".
 ```python
