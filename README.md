@@ -29,7 +29,9 @@ def lambda_handler(event, context):
     print(f"{event.get('body') = }")
     return {}
 ```
+Create your main.tf terraform file.
 ```terraform
+# main.tf
 module "websocket_api" {
   source  = "zmunk/websocket-api/aws"
   version = "1.0.0"
@@ -38,6 +40,29 @@ module "websocket_api" {
   connect_function_path     = "./lambda/websocket_connect"
   disconnect_function_path  = "./lambda/websocket_disconnect"
   sendmessage_function_path = "./lambda/websocket_sendmessage"
+}
+```
+Create your outputs.tf terraform file.
+```terraform
+# outputs.tf
+output "websocket_api_endpoint" {
+  description = "Websocket API url"
+  value       = module.websocket_api.url
+}
+
+output "websocket_connect_lambda_log_group" {
+  description = "Log group name of websocket connect function"
+  value       = module.websocket_api.connect_lambda_log_group
+}
+
+output "websocket_disconnect_lambda_log_group" {
+  description = "Log group name of websocket disconnect function"
+  value       = module.websocket_api.disconnect_lambda_log_group
+}
+
+output "websocket_sendmessage_lambda_log_group" {
+  description = "Log group name of websocket sendmessage function"
+  value       = module.websocket_api.sendmessage_lambda_log_group
 }
 ```
 
