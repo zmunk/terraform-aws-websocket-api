@@ -111,6 +111,8 @@ module "lambda_websocket_sendmessage" {
         Action = [
           "dynamodb:Scan",
           "dynamodb:DeleteItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:GetItem",
         ]
         Resource = [aws_dynamodb_table.connections.arn]
       },
