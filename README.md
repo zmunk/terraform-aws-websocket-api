@@ -9,6 +9,13 @@ on websocket connect, disconnect, and send-message events.
 Create three python scripts, one for "connect", one for "disconnect", and one for "sendmessage".
 ```python
 # lambda/websocket_connect
+import os
+import boto3
+
+dynamodb = boto3.resource("dynamodb")
+table = dynamodb.Table(os.environ["CONNECTIONS_TABLE"])
+# permissions: dynamodb:PutItem
+
 def lambda_handler(event, context):
     conn_id = event["requestContext"]["connectionId"]
     print(f"{conn_id = }")
@@ -16,6 +23,13 @@ def lambda_handler(event, context):
 ```
 ```python
 # lambda/websocket_disconnect
+import os
+import boto3
+
+dynamodb = boto3.resource("dynamodb")
+table = dynamodb.Table(os.environ["CONNECTIONS_TABLE"])
+# permissions: dynamodb:DeleteItem
+
 def lambda_handler(event, context):
     conn_id = event["requestContext"]["connectionId"]
     print(f"{conn_id = }")
@@ -23,6 +37,18 @@ def lambda_handler(event, context):
 ```
 ```python
 # lambda/websocket_sendmessage
+import os
+import boto3
+
+dynamodb = boto3.resource("dynamodb")
+table = dynamodb.Table(os.environ["CONNECTIONS_TABLE"])
+# permissions: 
+#   - dynamodb:Scan
+#   - dynamodb:DeleteItem
+#   - dynamodb:UpdateItem
+#   - dynamodb:GetItem
+#   - execute-api:ManageConnections
+
 def lambda_handler(event, context):
     conn_id = event["requestContext"]["connectionId"]
     print(f"{conn_id = }")
