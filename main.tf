@@ -81,8 +81,13 @@ module "lambda_websocket_disconnect" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = ["dynamodb:DeleteItem"]
+        Effect = "Allow"
+        Action = [
+          "dynamodb:Scan",
+          "dynamodb:DeleteItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:GetItem",
+        ]
         Resource = [aws_dynamodb_table.connections.arn]
       }
     ]
@@ -120,10 +125,16 @@ module "lambda_websocket_sendmessage" {
   })
 }
 
-# Attach the policy to the IAM role used by the Lambda function
-resource "aws_iam_role_policy_attachment" "websocket_connection_handler_policy_attachment" {
+# allow sendmessage function to handle api connections
+resource "aws_iam_role_policy_attachment" "api_sendmessage" {
   policy_arn = aws_iam_policy.websocket_connection_handler_policy.arn
   role       = module.lambda_websocket_sendmessage.role_name
+}
+
+# allow disconnect function to handle api connections
+resource "aws_iam_role_policy_attachment" "api_disconnect" {
+  policy_arn = aws_iam_policy.websocket_connection_handler_policy.arn
+  role       = module.lambda_websocket_disconnect.role_name
 }
 
 
