@@ -28,4 +28,5 @@ variable "sendmessage_function_path" {
 variable "function_environment_variables" {
   type        = map(string)
   description = "additional environment variables to pass to all three lambda functions"
+  default     = {}
 }
