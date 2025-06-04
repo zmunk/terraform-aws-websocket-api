@@ -24,3 +24,8 @@ variable "sendmessage_function_path" {
   type        = string
   description = "folder containing function code for lambda function that is called when client sends message to websocket"
 }
+
+variable "function_environment_variables" {
+  type        = map(string)
+  description = "additional environment variables to pass to all three lambda functions"
+}

@@ -28,9 +28,12 @@ module "lambda_websocket_connect" {
   runtime       = "python3.11"
   source_path   = var.connect_function_path
 
-  environment_variables = {
-    CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
-  }
+  environment_variables = merge(
+    {
+      CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
+    },
+    var.function_environment_variables
+  )
 
   policy_json = jsonencode({
     Version = "2012-10-17"
@@ -73,9 +76,12 @@ module "lambda_websocket_disconnect" {
   runtime       = "python3.11"
   source_path   = var.disconnect_function_path
 
-  environment_variables = {
-    CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
-  }
+  environment_variables = merge(
+    {
+      CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
+    },
+    var.function_environment_variables,
+  )
 
   policy_json = jsonencode({
     Version = "2012-10-17"
@@ -104,9 +110,12 @@ module "lambda_websocket_sendmessage" {
   runtime       = "python3.11"
   source_path   = var.sendmessage_function_path
 
-  environment_variables = {
-    CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
-  }
+  environment_variables = merge(
+    {
+      CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
+    },
+    var.function_environment_variables,
+  )
 
   policy_json = jsonencode({
     Version = "2012-10-17"
