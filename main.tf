@@ -41,8 +41,14 @@ module "lambda_websocket_connect" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = ["dynamodb:PutItem"]
+        Effect = "Allow"
+        Action = [
+          "dynamodb:PutItem",
+          "dynamodb:Scan",
+          "dynamodb:DeleteItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:GetItem",
+        ]
         Resource = [aws_dynamodb_table.connections.arn]
       }
     ]
@@ -93,6 +99,7 @@ module "lambda_websocket_disconnect" {
       {
         Effect = "Allow"
         Action = [
+          "dynamodb:PutItem",
           "dynamodb:Scan",
           "dynamodb:DeleteItem",
           "dynamodb:UpdateItem",
@@ -129,6 +136,7 @@ module "lambda_websocket_sendmessage" {
       {
         Effect = "Allow"
         Action = [
+          "dynamodb:PutItem",
           "dynamodb:Scan",
           "dynamodb:DeleteItem",
           "dynamodb:UpdateItem",
@@ -144,6 +152,12 @@ module "lambda_websocket_sendmessage" {
 resource "aws_iam_role_policy_attachment" "api_sendmessage" {
   policy_arn = aws_iam_policy.websocket_connection_handler_policy.arn
   role       = module.lambda_websocket_sendmessage.role_name
+}
+
+# allow connect function to handle api connections
+resource "aws_iam_role_policy_attachment" "api_connect" {
+  policy_arn = aws_iam_policy.websocket_connection_handler_policy.arn
+  role       = module.lambda_websocket_connect.role_name
 }
 
 # allow disconnect function to handle api connections
