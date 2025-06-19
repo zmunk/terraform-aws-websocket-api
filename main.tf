@@ -28,6 +28,8 @@ module "lambda_websocket_connect" {
   runtime       = "python3.11"
   source_path   = var.connect_function_path
 
+  layers = var.lambda_layers
+
   environment_variables = merge(
     {
       CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
@@ -76,6 +78,8 @@ module "lambda_websocket_disconnect" {
   runtime       = "python3.11"
   source_path   = var.disconnect_function_path
 
+  layers = var.lambda_layers
+
   environment_variables = merge(
     {
       CONNECTIONS_TABLE = aws_dynamodb_table.connections.name,
@@ -109,6 +113,8 @@ module "lambda_websocket_sendmessage" {
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.11"
   source_path   = var.sendmessage_function_path
+
+  layers = var.lambda_layers
 
   environment_variables = merge(
     {

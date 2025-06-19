@@ -30,3 +30,9 @@ variable "function_environment_variables" {
   description = "additional environment variables to pass to all three lambda functions"
   default     = {}
 }
+
+variable "lambda_layers" {
+  type        = list(string)
+  description = "list of ARNs of lambda layers to attach to all three lambda functions"
+  default     = []
+}
